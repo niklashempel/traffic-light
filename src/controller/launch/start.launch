@@ -1,6 +1,7 @@
 <launch>
     <node pkg="controller" type="traffic_light_controller.py" name="traffic_light_controller" output="screen"/>
     <node pkg="controller" type="traffic_light_visualization.py" name="traffic_light_visualization" output="screen"/>
+    <node pkg="controller" type="mode_toggle.py" name="mode_toggle_service" output="screen" />
     <!-- Launch visualization in rviz-->
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find controller)/config/default.rviz" />
 </launch>

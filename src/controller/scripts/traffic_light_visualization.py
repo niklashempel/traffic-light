@@ -48,34 +48,51 @@ def traffic_light_visualization():
     def traffic_light_callback(msg: TrafficLightState):
         if msg.direction == "North-South":
             if msg.state == "Red":
-                marker_north.color.r = marker_south.color.r = 1.0  # Red
+                marker_north.color.r = marker_south.color.r = 1.0
                 marker_north.color.g = marker_south.color.g = 0.0
                 marker_north.color.b = marker_south.color.b = 0.0
+                marker_north.color.a = marker_south.color.a = 1.0
             elif msg.state == "Yellow":
-                marker_north.color.r = marker_south.color.r = 1.0  # Yellow
+                marker_north.color.r = marker_south.color.r = 1.0
                 marker_north.color.g = marker_south.color.g = 1.0
                 marker_north.color.b = marker_south.color.b = 0.0
+                marker_north.color.a = marker_south.color.a = 1.0
             elif msg.state == "Green":
-                marker_north.color.r = marker_south.color.r = 0.0  # Green
+                marker_north.color.r = marker_south.color.r = 0.0
                 marker_north.color.g = marker_south.color.g = 1.0
                 marker_north.color.b = marker_south.color.b = 0.0
+                marker_north.color.a = marker_south.color.a = 1.0
+            elif msg.state == "Black":
+                marker_north.color.r = marker_south.color.r = 0.0
+                marker_north.color.g = marker_south.color.g = 0.0
+                marker_north.color.b = marker_south.color.b = 0.0
+                marker_north.color.a = marker_south.color.a = 1.0
             marker_pub.publish(marker_north)
             marker_pub.publish(marker_south)
         elif msg.direction == "East-West":
             if msg.state == "Red":
-                marker_east.color.r = marker_west.color.r = 1.0  # Red
+                marker_east.color.r = marker_west.color.r = 1.0
                 marker_east.color.g = marker_west.color.g = 0.0
                 marker_east.color.b = marker_west.color.b = 0.0
+                marker_east.color.a = marker_west.color.a = 1.0
             elif msg.state == "Yellow":
-                marker_east.color.r = marker_west.color.r = 1.0  # Yellow
+                marker_east.color.r = marker_west.color.r = 1.0
                 marker_east.color.g = marker_west.color.g = 1.0
                 marker_east.color.b = marker_west.color.b = 0.0
+                marker_east.color.a = marker_west.color.a = 1.0
             elif msg.state == "Green":
-                marker_east.color.r = marker_west.color.r = 0.0  # Green
+                marker_east.color.r = marker_west.color.r = 0.0
                 marker_east.color.g = marker_west.color.g = 1.0
                 marker_east.color.b = marker_west.color.b = 0.0
-            marker_pub.publish(marker_east)
+                marker_east.color.a = marker_west.color.a = 1.0
+            elif msg.state == "Black":
+                marker_east.color.r = marker_west.color.r = 0.0
+                marker_east.color.g = marker_west.color.g = 0.0
+                marker_east.color.b = marker_west.color.b = 0.0
+                marker_east.color.a = marker_west.color.a = 1.0
+                
             marker_pub.publish(marker_west)
+            marker_pub.publish(marker_east)
 
     rospy.Subscriber("/traffic_light/state", TrafficLightState, traffic_light_callback)
     rospy.spin()
