@@ -4,29 +4,23 @@ import rospy
 from controller.msg import TrafficLightState
 from controller.srv import ToggleMode
 
-current_mode = "Day"
-
 '''
 Publishes traffic light states and changes states
 '''
 def traffic_light_controller():
-    global current_mode
-        
     rospy.init_node("traffic_light_controller", anonymous=True)
     rospy.loginfo("Initialized traffic_light_controller")
-    
-    rospy.wait_for_service("toggle_mode")
-    toggle_service = rospy.ServiceProxy("toggle_mode", ToggleMode)
         
     rate = rospy.Rate(1) # 1 Hz
     pub = rospy.Publisher("/traffic_light/state", TrafficLightState, queue_size=10)
     
     while not rospy.is_shutdown():
-        try:
-            response = toggle_service("")
-            current_mode = response.status
-        except rospy.ServiceException as e:
-            rospy.logerr(f"Service call failed: {e}")
+        if rospy.has_param("/traffic_light/current_mode"):
+            current_mode = rospy.get_param("/traffic_light/current_mode")
+        else:
+            rospy.logerr("param '/traffic_light/current_mode' not set")
+            rate.sleep()
+            continue
             
         [states, durations] = get_states(current_mode)
         for i, state in enumerate(states):
