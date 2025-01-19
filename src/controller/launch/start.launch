@@ -1,5 +1,14 @@
 <launch>
-    <node pkg="controller" type="traffic_light_controller.py" name="traffic_light_controller" output="screen"/>
+    <node pkg="controller" type="traffic_light_controller.py" name="traffic_light_controller" output="screen">
+        <rosparam param="day_mode">
+            states: ['Red-Red', 'Yellow-Red', 'Green-Red', 'Yellow-Red', 'Red-Red', 'Red-Yellow', 'Red-Green', 'Red-Yellow']
+            durations: [3, 1, 5, 1, 3, 1, 5, 1]
+        </rosparam>
+        <rosparam param="night_mode">
+            states: ['Black-Yellow', 'Black-Black']
+            durations: [2, 2]
+        </rosparam>
+    </node>
     <node pkg="controller" type="traffic_light_visualization.py" name="traffic_light_visualization" output="screen"/>
     <node pkg="controller" type="mode_toggle.py" name="mode_toggle_service" output="screen">
         <param name="default_mode" value="Day"/>
