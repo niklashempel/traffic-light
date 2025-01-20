@@ -8,6 +8,14 @@
             states: ['Black-Yellow', 'Black-Black']
             durations: [2, 2]
         </rosparam>
+        <rosparam param="pedestrian_crossing_north_south">
+            states: ['Red-Red', 'Red-Yellow', 'Red-Green', 'Red-Yellow']
+            durations: [3, 1, 10, 1]
+        </rosparam>
+        <rosparam param="pedestrian_crossing_east_west">
+            states: ['Red-Red', 'Yellow-Red', 'Green-Red', 'Yellow-Red']
+            durations: [3, 1, 10, 1]
+        </rosparam>
     </node>
     <node pkg="controller" type="traffic_light_visualization.py" name="traffic_light_visualization" output="screen"/>
     <node pkg="controller" type="mode_toggle.py" name="mode_toggle_service" output="screen">
