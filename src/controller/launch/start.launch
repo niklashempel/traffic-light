@@ -21,6 +21,7 @@
     <node pkg="controller" type="mode_toggle.py" name="mode_toggle_service" output="screen">
         <param name="default_mode" value="Day"/>
     </node>
+    <node pkg="controller" type="violation_detector.py" name="violation_detector" output="screen"/>
     <!-- Launch visualization in rviz-->
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find controller)/config/default.rviz" />
 </launch>
