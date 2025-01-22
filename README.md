@@ -1,4 +1,4 @@
-# Traffic Light Controller
+# Traffic Light Controller (ROS)
 
 This project is a ROS-based traffic light controller system. It includes nodes for controlling traffic lights, handling pedestrian crossing requests, and visualizing the traffic light states in RViz.
 
@@ -39,6 +39,11 @@ roslaunch controller start.launch
 
 ## Nodes
 
+The graph shows how the different nodes and topics work together:
+![ROS graph](images/rosgraph.png)
+
+Below are some details about the different nodes.
+
 ### Traffic Light Controller
 
 The traffic light controller node is responsible for controlling the traffic lights. It iterates through the defined states and publishes the current state to the `/traffic_light/state` topic.
@@ -47,15 +52,15 @@ At the same time, the node implements a service `/pedestrian_crossing` that can 
 
 The service request can be found under [src/controller/srv/PedestrianCrossing.srv](src/controller/srv/PedestrianCrossing.srv).
 
-### Traffic Light Visualizer
-
-The traffic light visualizer node subscribes to the `/traffic_light/state` topic and visualizes the current state in RViz.
-
 ### Mode Toggle Service
 
 The mode toggle service node implements a service `/toggle_mode` that can be called to toggle the mode of the traffic light controller between day and night mode. During night, the traffic light for one direction will be turned off and the other direction will have a blinking yellow light.
 
 The service request can be found under [src/controller/srv/ToggleMode.srv](src/controller/srv/ToggleMode.srv).
+
+### Violation detector
+
+The violation detector node subscribes to the `/traffic_light/state` and `/passing_vehicle` topics and checks for violations. It will publish a possible violation to the `/traffic_violation` topic.
 
 ## Parameters
 
@@ -72,8 +77,40 @@ The service request can be found under [src/controller/srv/ToggleMode.srv](src/c
 
 ## Messages
 
-`TrafficLightState.msg`: Custom message for traffic light states.
+`TrafficLightState.msg`:
 
 - `direction`: Direction of the traffic light (North-South or East-West).
 - `state`: State of the traffic light (Red, Yellow, Green, or Black).
 - `duration`: Duration of the state in seconds.
+
+`PassingVehicle.msg`:
+
+- `location`: Location of the vehicle (North, East, South, West)
+- `is_passing`: Whether the vehicle is passing the intersection.
+
+`TrafficViolation.msg`:
+
+- `location`: Location of the violation (North, East, South, West)
+- `violation_detected`: Whether a violation was detected.
+- `timestamp`: Timestamp of the violation.
+
+## Useful commands
+
+Change to night mode
+
+```sh
+rosservice call toggle_mode "mode: 'Night'"
+```
+
+Trigger pedestrian crossing
+
+```sh
+rosservice call pedestrian_crossing "direction: 'North-South'"
+```
+
+Simulate an incoming vehicle
+
+```sh
+rostopic pub /passing_vehicle controller/PassingVehicle "location: North
+is_passing: true"
+```
