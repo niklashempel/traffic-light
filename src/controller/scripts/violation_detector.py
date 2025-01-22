@@ -32,8 +32,7 @@ def violation_detector():
     rospy.Subscriber("/passing_vehicle", PassingVehicle, passing_vehicle_callback)
     rospy.loginfo("Initialized violation_detector")
     
-    while not rospy.is_shutdown():
-        rospy.spin()
+    rospy.spin()
         
 if __name__ == "__main__":
     try:
